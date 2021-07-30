@@ -10,10 +10,40 @@ public class Player : MonoBehaviour
     public Animator PlayerAnimator;
     public SpriteRenderer PlayerSpriteRenderer;
     private Vector2 movement;
-    public GameObject WinPanal;
+    public GameObject WinPanel;
+    public GameObject LevelTextPanel;
+    public GameObject PauseMenuPanal;
+
+    private void Start()
+    {
+        StartCoroutine(WaitForLevelText());
+    }
+
+    IEnumerator WaitForLevelText()
+    {
+        LevelTextPanel.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        LevelTextPanel.SetActive(false);
+    }
 
     void Update()
     {
+        if(!LevelTextPanel.activeSelf && !WinPanel.activeSelf && !PauseMenuPanal.activeSelf)
+        {
+            MovePlayer();
+        }else if(PauseMenuPanal.activeSelf && Input.GetKeyUp(KeyCode.Escape))
+        {
+            PauseMenuPanal.SetActive(false);
+        }
+    }
+
+    private void MovePlayer()
+    {
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            PauseMenuPanal.SetActive(true);
+        }
+
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
@@ -21,7 +51,7 @@ public class Player : MonoBehaviour
         PlayerAnimator.SetFloat("Vertical", movement.y);
         PlayerAnimator.SetFloat("Speed", movement.sqrMagnitude);
 
-        if(movement.x > 0)
+        if (movement.x > 0)
         {
             PlayerSpriteRenderer.flipX = true;
         }
@@ -39,7 +69,7 @@ public class Player : MonoBehaviour
             {
                 readyForInput = false;
                 Move(input);
-                WinPanal.SetActive(IsLevelComplete());
+                WinPanel.SetActive(IsLevelComplete());
             }
         }
         else
