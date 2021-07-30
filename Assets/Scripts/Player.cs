@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public Animator PlayerAnimator;
     public SpriteRenderer PlayerSpriteRenderer;
     private Vector2 movement;
+    public GameObject WinPanal;
 
     void Update()
     {
@@ -38,7 +39,7 @@ public class Player : MonoBehaviour
             {
                 readyForInput = false;
                 Move(input);
-                //nextButton.SetActive(IsLevelComplete());
+                WinPanal.SetActive(IsLevelComplete());
             }
         }
         else
