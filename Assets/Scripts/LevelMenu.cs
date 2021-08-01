@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class LevelMenu : MonoBehaviour
 {
     //set the number of levels here
-    private readonly int levelNum = 3;
+    private readonly int levelNum = 4;
     private AudioManager audioManager;
     private string sceneName;
     private int currentLevel;
