@@ -5,12 +5,14 @@ using UnityEngine;
 public class Box : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
+    private AudioManager audioManager;
     public bool onTarget;
     public Sprite onTargetSprite;
     public Sprite normalSprite;
 
     void Start()
     {
+        audioManager = FindObjectOfType<AudioManager>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -24,6 +26,7 @@ public class Box : MonoBehaviour
         {
             transform.Translate(direction);
             TransformOnTarget();
+            audioManager.Play("boxSound");
             return true;
         }
     }
@@ -36,13 +39,11 @@ public class Box : MonoBehaviour
             if (transform.position.x == target.transform.position.x && transform.position.y == target.transform.position.y + 0.5)
             {
                 spriteRenderer.sprite = onTargetSprite;
-                spriteRenderer.color = Color.red;
                 onTarget = true;
                 return;
             }
         }
         spriteRenderer.sprite = normalSprite;
-        spriteRenderer.color = Color.white;
         onTarget = false;
     }
 
@@ -63,15 +64,6 @@ public class Box : MonoBehaviour
             if (box.transform.position.x == newPos.x && box.transform.position.y == newPos.y)
             {
                 return true;
-                //Box bx = box.GetComponent<Box>();
-                //if (bx && bx.Move(direction))
-                //{
-                //    return false;
-                //}
-                //else
-                //{
-                //    return true;
-                //}
             }
         }
         return false;

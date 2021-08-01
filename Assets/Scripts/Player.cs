@@ -7,33 +7,42 @@ public class Player : MonoBehaviour
     //public Rigidbody2D PlayerRigidbody;
     //readonly float MovementSpeed = 2.5f;
     private bool readyForInput = false;
+    private Vector2 movement;
+    private AudioManager audioManager;
+
     public Animator PlayerAnimator;
     public SpriteRenderer PlayerSpriteRenderer;
-    private Vector2 movement;
     public GameObject WinPanel;
     public GameObject LevelTextPanel;
     public GameObject PauseMenuPanal;
+    public GameObject PauseButton;
 
     private void Start()
     {
+        audioManager = FindObjectOfType<AudioManager>();
+        audioManager.Play("startingSound");
         StartCoroutine(WaitForLevelText());
+        
     }
 
-    IEnumerator WaitForLevelText()
+    private IEnumerator WaitForLevelText()
     {
         LevelTextPanel.SetActive(true);
         yield return new WaitForSeconds(1.5f);
         LevelTextPanel.SetActive(false);
+        audioManager.Play("levelBgMusic");
     }
 
-    void Update()
+    private void Update()
     {
         if(!LevelTextPanel.activeSelf && !WinPanel.activeSelf && !PauseMenuPanal.activeSelf)
         {
             MovePlayer();
-        }else if(PauseMenuPanal.activeSelf && Input.GetKeyUp(KeyCode.Escape))
+        }
+        else if(PauseMenuPanal.activeSelf && Input.GetKeyUp(KeyCode.Escape))
         {
             PauseMenuPanal.SetActive(false);
+            PauseButton.SetActive(true);
         }
     }
 
@@ -42,6 +51,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Escape))
         {
             PauseMenuPanal.SetActive(true);
+            PauseButton.SetActive(false);
         }
 
         movement.x = Input.GetAxisRaw("Horizontal");
@@ -69,7 +79,11 @@ public class Player : MonoBehaviour
             {
                 readyForInput = false;
                 Move(input);
-                WinPanel.SetActive(IsLevelComplete());
+                if (IsLevelComplete())
+                {
+                    PauseButton.SetActive(false);
+                    WinPanel.SetActive(true);
+                }
             }
         }
         else
@@ -83,7 +97,7 @@ public class Player : MonoBehaviour
     //    PlayerRigidbody.MovePosition(PlayerRigidbody.position + movement * MovementSpeed * Time.fixedDeltaTime);
     //}
 
-    public bool Move(Vector2 direction)
+    public void Move(Vector2 direction)
     {
         if (Mathf.Abs(direction.x) < 0.5)
         {
@@ -94,14 +108,9 @@ public class Player : MonoBehaviour
             direction.y = 0;
         }
         direction.Normalize();
-        if (Blocked(transform.position, direction))
-        {
-            return false;
-        }
-        else
+        if (!Blocked(transform.position, direction))
         {
             transform.Translate(direction);
-            return true;
         }
     }
 
