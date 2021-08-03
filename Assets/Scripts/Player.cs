@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
@@ -19,6 +20,10 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        if (FindObjectOfType<EventSystem>() == null)
+        {
+            var eventSystem = new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
+        }
         audioManager = FindObjectOfType<AudioManager>();
         audioManager.Play("startingSound");
         StartCoroutine(WaitForLevelText());
