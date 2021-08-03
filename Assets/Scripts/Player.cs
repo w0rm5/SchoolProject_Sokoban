@@ -21,14 +21,9 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        if (FindObjectOfType<EventSystem>() == null)
-        {
-            var eventSystem = new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
-        }
         audioManager = FindObjectOfType<AudioManager>();
         audioManager.Play("startingSound");
-        StartCoroutine(WaitForLevelText());
-        
+        StartCoroutine(WaitForLevelText());        
     }
 
     private IEnumerator WaitForLevelText()
@@ -41,7 +36,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if(!LevelTextPanel.activeSelf && !WinPanel.activeSelf && !PauseMenuPanal.activeSelf)
+        if (!LevelTextPanel.activeSelf && !WinPanel.activeSelf && !PauseMenuPanal.activeSelf)
         {
             MovePlayer();
         }
@@ -56,8 +51,16 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.Escape))
         {
-            PauseMenuPanal.SetActive(true);
-            PauseButton.SetActive(false);
+            if (PauseMenuPanal.activeSelf)
+            {
+                PauseMenuPanal.SetActive(false);
+                PauseButton.SetActive(true);
+            }
+            else
+            {
+                PauseMenuPanal.SetActive(true);
+                PauseButton.SetActive(false);
+            }
         }
 
         if (Input.GetKeyUp(KeyCode.F2))
@@ -110,6 +113,7 @@ public class Player : MonoBehaviour
 
     public void Move(Vector2 direction)
     {
+        audioManager.Play("walkingSound");
         if (Mathf.Abs(direction.x) < 0.5)
         {
             direction.x = 0;
