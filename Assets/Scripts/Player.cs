@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -57,6 +58,11 @@ public class Player : MonoBehaviour
         {
             PauseMenuPanal.SetActive(true);
             PauseButton.SetActive(false);
+        }
+
+        if (Input.GetKeyUp(KeyCode.F2))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         movement.x = Input.GetAxisRaw("Horizontal");
