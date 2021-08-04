@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -21,8 +23,7 @@ public class Player : MonoBehaviour
     {
         audioManager = FindObjectOfType<AudioManager>();
         audioManager.Play("startingSound");
-        StartCoroutine(WaitForLevelText());
-        
+        StartCoroutine(WaitForLevelText());        
     }
 
     private IEnumerator WaitForLevelText()
@@ -35,7 +36,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if(!LevelTextPanel.activeSelf && !WinPanel.activeSelf && !PauseMenuPanal.activeSelf)
+        if (!LevelTextPanel.activeSelf && !WinPanel.activeSelf && !PauseMenuPanal.activeSelf)
         {
             MovePlayer();
         }
@@ -50,8 +51,21 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.Escape))
         {
-            PauseMenuPanal.SetActive(true);
-            PauseButton.SetActive(false);
+            if (PauseMenuPanal.activeSelf)
+            {
+                PauseMenuPanal.SetActive(false);
+                PauseButton.SetActive(true);
+            }
+            else
+            {
+                PauseMenuPanal.SetActive(true);
+                PauseButton.SetActive(false);
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.F2))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         movement.x = Input.GetAxisRaw("Horizontal");
@@ -99,6 +113,7 @@ public class Player : MonoBehaviour
 
     public void Move(Vector2 direction)
     {
+        audioManager.Play("walkingSound");
         if (Mathf.Abs(direction.x) < 0.5)
         {
             direction.x = 0;
@@ -120,7 +135,8 @@ public class Player : MonoBehaviour
         GameObject[] walls = GameObject.FindGameObjectsWithTag("Wall");
         foreach (GameObject wall in walls)
         {
-            if (wall.transform.position.x == newPos.x && wall.transform.position.y == newPos.y)
+            if (Mathf.Approximately(wall.transform.position.x, newPos.x)
+                && Mathf.Approximately(wall.transform.position.y , newPos.y))
             {
                 return true;
             }
@@ -128,7 +144,8 @@ public class Player : MonoBehaviour
         GameObject[] boxes = GameObject.FindGameObjectsWithTag("Box");
         foreach (GameObject box in boxes)
         {
-            if (box.transform.position.x == newPos.x && box.transform.position.y == newPos.y)
+            if (Mathf.Approximately(box.transform.position.x, newPos.x)
+                && Mathf.Approximately(box.transform.position.y, newPos.y))
             {
                 Box bx = box.GetComponent<Box>();
                 if (bx && bx.Move(direction))

@@ -74,3 +74,9 @@ MonoBehaviour:
     isLoop: 1
     volume: 1
     pitch: 1
+  - source: {fileID: 0}
+    soundClip: {fileID: 8300000, guid: 720e419a445fc5946b41d7bf0e25ad5b, type: 3}
+    name: walkingSound
+    isLoop: 0
+    volume: 0.5
+    pitch: 1
