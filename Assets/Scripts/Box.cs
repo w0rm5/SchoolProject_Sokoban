@@ -31,7 +31,7 @@ public class Box : MonoBehaviour
         }
     }
 
-    private void TransformOnTarget()
+    public void TransformOnTarget()
     {
         GameObject[] targets = GameObject.FindGameObjectsWithTag("Target");
         foreach (GameObject target in targets)

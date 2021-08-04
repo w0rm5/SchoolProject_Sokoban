@@ -18,6 +18,9 @@ public class Player : MonoBehaviour
     public GameObject LevelTextPanel;
     public GameObject PauseMenuPanal;
     public GameObject PauseButton;
+    public GameObject UndoButton;
+
+    private readonly Stack<MoveHistory> MoveHistories = new Stack<MoveHistory>();
 
     private void Start()
     {
@@ -44,6 +47,7 @@ public class Player : MonoBehaviour
         {
             PauseMenuPanal.SetActive(false);
             PauseButton.SetActive(true);
+            UndoButton.SetActive(true);
         }
     }
 
@@ -55,17 +59,24 @@ public class Player : MonoBehaviour
             {
                 PauseMenuPanal.SetActive(false);
                 PauseButton.SetActive(true);
+                UndoButton.SetActive(true);
             }
             else
             {
                 PauseMenuPanal.SetActive(true);
                 PauseButton.SetActive(false);
+                UndoButton.SetActive(false);
             }
         }
 
         if (Input.GetKeyUp(KeyCode.F2))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+        
+        if (Input.GetKeyUp(KeyCode.Z))
+        {
+            UndoMove();
         }
 
         movement.x = Input.GetAxisRaw("Horizontal");
@@ -96,6 +107,7 @@ public class Player : MonoBehaviour
                 if (IsLevelComplete())
                 {
                     PauseButton.SetActive(false);
+                    UndoButton.SetActive(false);
                     WinPanel.SetActive(true);
                 }
             }
@@ -150,6 +162,7 @@ public class Player : MonoBehaviour
                 Box bx = box.GetComponent<Box>();
                 if (bx && bx.Move(direction))
                 {
+                    MoveHistories.Push(new MoveHistory(transform.position, (Vector2)box.transform.position - direction, box));
                     return false;
                 }
                 else
@@ -159,6 +172,18 @@ public class Player : MonoBehaviour
             }
         }
         return false;
+    }
+
+
+    public void UndoMove()
+    {
+        if(MoveHistories.Count > 0)
+        {
+            MoveHistory previousMove = MoveHistories.Pop();
+            transform.position = previousMove.PlayerPosition;
+            previousMove.BoxReference.transform.position = previousMove.BoxPosition;
+            previousMove.BoxReference.GetComponent<Box>().TransformOnTarget();
+        }
     }
 
     private bool IsLevelComplete()
