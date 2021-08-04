@@ -135,7 +135,8 @@ public class Player : MonoBehaviour
         GameObject[] walls = GameObject.FindGameObjectsWithTag("Wall");
         foreach (GameObject wall in walls)
         {
-            if (wall.transform.position.x == newPos.x && wall.transform.position.y == newPos.y)
+            if (Mathf.Approximately(wall.transform.position.x, newPos.x)
+                && Mathf.Approximately(wall.transform.position.y , newPos.y))
             {
                 return true;
             }
@@ -143,7 +144,8 @@ public class Player : MonoBehaviour
         GameObject[] boxes = GameObject.FindGameObjectsWithTag("Box");
         foreach (GameObject box in boxes)
         {
-            if (box.transform.position.x == newPos.x && box.transform.position.y == newPos.y)
+            if (Mathf.Approximately(box.transform.position.x, newPos.x)
+                && Mathf.Approximately(box.transform.position.y, newPos.y))
             {
                 Box bx = box.GetComponent<Box>();
                 if (bx && bx.Move(direction))
