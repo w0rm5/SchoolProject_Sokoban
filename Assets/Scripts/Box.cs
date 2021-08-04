@@ -36,7 +36,8 @@ public class Box : MonoBehaviour
         GameObject[] targets = GameObject.FindGameObjectsWithTag("Target");
         foreach (GameObject target in targets)
         {
-            if (transform.position.x == target.transform.position.x && transform.position.y == target.transform.position.y + 0.5)
+            if (Mathf.Approximately(transform.position.x, target.transform.position.x) 
+                && Mathf.Approximately(transform.position.y, target.transform.position.y + 0.5f))
             {
                 spriteRenderer.sprite = onTargetSprite;
                 onTarget = true;
@@ -53,7 +54,8 @@ public class Box : MonoBehaviour
         GameObject[] walls = GameObject.FindGameObjectsWithTag("Wall");
         foreach (GameObject wall in walls)
         {
-            if (wall.transform.position.x == newPos.x && wall.transform.position.y == newPos.y)
+            if (Mathf.Approximately(wall.transform.position.x, newPos.x) 
+                && Mathf.Approximately(wall.transform.position.y, newPos.y))
             {
                 return true;
             }
@@ -61,7 +63,8 @@ public class Box : MonoBehaviour
         GameObject[] boxes = GameObject.FindGameObjectsWithTag("Box");
         foreach (GameObject box in boxes)
         {
-            if (box.transform.position.x == newPos.x && box.transform.position.y == newPos.y)
+            if (Mathf.Approximately(box.transform.position.x, newPos.x) 
+                && Mathf.Approximately(box.transform.position.y, newPos.y))
             {
                 return true;
             }
