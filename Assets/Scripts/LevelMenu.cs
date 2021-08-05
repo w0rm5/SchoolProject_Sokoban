@@ -15,6 +15,7 @@ public class LevelMenu : MonoBehaviour
     public TextMeshProUGUI levelText;
     public GameObject PauseMenuPanal;
     public GameObject PauseButton;
+    public GameObject UndoButton;
 
     private void Start()
     {
@@ -35,12 +36,20 @@ public class LevelMenu : MonoBehaviour
         audioManager.Play("btnClickSound");
         PauseMenuPanal.SetActive(true);
         PauseButton.SetActive(false);
+        UndoButton.SetActive(false);
     }
     public void ResumeGame()
     {
         audioManager.Play("btnClickSound");
         PauseMenuPanal.SetActive(false);
         PauseButton.SetActive(true);
+        UndoButton.SetActive(true);
+    }
+
+    public void UndoMove()
+    {
+        audioManager.Play("btnClickSound");
+        GameObject.Find("Player").GetComponent<Player>().UndoMove();
     }
 
     public void RestartGame()
