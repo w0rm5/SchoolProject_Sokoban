@@ -34,6 +34,8 @@ public class Player : MonoBehaviour
         LevelTextPanel.SetActive(true);
         yield return new WaitForSeconds(1.5f);
         LevelTextPanel.SetActive(false);
+        PauseButton.SetActive(true);
+        UndoButton.SetActive(true);
         audioManager.Play("levelBgMusic");
     }
 
