@@ -11,45 +11,36 @@ public class LevelMenu : MonoBehaviour
     private AudioManager audioManager;
     private string sceneName;
     private int currentLevel;
+    private Player player;
 
     public TextMeshProUGUI levelText;
-    public GameObject PauseMenuPanal;
-    public GameObject PauseButton;
-    public GameObject UndoButton;
 
     private void Start()
     {
+        player = GameObject.Find("Player").GetComponent<Player>();
         sceneName = SceneManager.GetActiveScene().name;
         audioManager = FindObjectOfType<AudioManager>();
         if (int.TryParse(sceneName.Substring(5), out currentLevel))
         {
             levelText.text = "Level " + currentLevel.ToString();
         }
-        else
-        {
-            Debug.Log("ERROR: Something went wrong, cannot parse int current level");
-        }
     }
 
     public void PauseGame()
     {
         audioManager.Play("btnClickSound");
-        PauseMenuPanal.SetActive(true);
-        PauseButton.SetActive(false);
-        UndoButton.SetActive(false);
+        player.PauseGame(true);
     }
     public void ResumeGame()
     {
         audioManager.Play("btnClickSound");
-        PauseMenuPanal.SetActive(false);
-        PauseButton.SetActive(true);
-        UndoButton.SetActive(true);
+        player.PauseGame(false);
     }
 
     public void UndoMove()
     {
         audioManager.Play("btnClickSound");
-        GameObject.Find("Player").GetComponent<Player>().UndoMove();
+        player.UndoMove();
     }
 
     public void RestartGame()

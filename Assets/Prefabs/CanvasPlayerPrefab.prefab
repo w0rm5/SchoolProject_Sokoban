@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 1276871390615860985}
   - component: {fileID: 4148035325945998889}
   m_Layer: 5
-  m_Name: LevelText (1)
+  m_Name: HintText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -654,9 +654,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelText: {fileID: 8516499614742816513}
-  PauseMenuPanal: {fileID: 8516499614107755817}
-  PauseButton: {fileID: 8516499614494140557}
-  UndoButton: {fileID: 1846424698566571392}
 --- !u!1 &8516499612973707552
 GameObject:
   m_ObjectHideFlags: 0

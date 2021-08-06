@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    //public Rigidbody2D PlayerRigidbody;
-    //readonly float MovementSpeed = 2.5f;
     private bool readyForInput = false;
     private Vector2 movement;
     private AudioManager audioManager;
@@ -47,28 +45,22 @@ public class Player : MonoBehaviour
         }
         else if(PauseMenuPanal.activeSelf && Input.GetKeyUp(KeyCode.Escape))
         {
-            PauseMenuPanal.SetActive(false);
-            PauseButton.SetActive(true);
-            UndoButton.SetActive(true);
+            PauseGame(false);
         }
+    }
+
+    public void PauseGame(bool pause)
+    {
+        PauseMenuPanal.SetActive(pause);
+        PauseButton.SetActive(!pause);
+        UndoButton.SetActive(!pause);
     }
 
     private void MovePlayer()
     {
         if (Input.GetKeyUp(KeyCode.Escape))
         {
-            if (PauseMenuPanal.activeSelf)
-            {
-                PauseMenuPanal.SetActive(false);
-                PauseButton.SetActive(true);
-                UndoButton.SetActive(true);
-            }
-            else
-            {
-                PauseMenuPanal.SetActive(true);
-                PauseButton.SetActive(false);
-                UndoButton.SetActive(false);
-            }
+            PauseGame(!PauseMenuPanal.activeSelf);
         }
 
         if (Input.GetKeyUp(KeyCode.F2))
@@ -119,11 +111,6 @@ public class Player : MonoBehaviour
             readyForInput = true;
         }
     }
-
-    //private void FixedUpdate()
-    //{
-    //    PlayerRigidbody.MovePosition(PlayerRigidbody.position + movement * MovementSpeed * Time.fixedDeltaTime);
-    //}
 
     public void Move(Vector2 direction)
     {

@@ -12,6 +12,7 @@ public class MainMenu : MonoBehaviour
     public GameObject MainMenuObject;
     public GameObject LevelSelectPanel;
     public GameObject BackButton;
+    public GameObject QuitConfirmPanel;
 
     private void Start()
     {
@@ -23,7 +24,7 @@ public class MainMenu : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.Escape) && LevelSelectPanel.activeSelf)
         {
-            BackMainMenu();
+            MainMenuSetting(true);
         }
     }
 
@@ -33,13 +34,18 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("Level1");
     }
 
-    public void ShowLevelSelectMenu()
+    private void MainMenuSetting(bool showMainMenu)
+    {
+        TitleText.text = showMainMenu ? "SOKOBAN GAME": "SELECT LEVEL";
+        LevelSelectPanel.SetActive(!showMainMenu);
+        BackButton.SetActive(!showMainMenu);
+        MainMenuObject.SetActive(showMainMenu);
+    }
+
+    public void ShowMainMenu(bool showMainMenu)
     {
         audioManager.Play("btnClickSound");
-        TitleText.text = "SELECT LEVEL";
-        MainMenuObject.SetActive(false);
-        LevelSelectPanel.SetActive(true);
-        BackButton.SetActive(true);
+        MainMenuSetting(showMainMenu);
     }
 
     public void SelectLevel(string level)
@@ -48,18 +54,10 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("Level" + level);
     }
 
-    public void BackMainMenuClick()
+    public void QuitConfirm(bool show)
     {
         audioManager.Play("btnClickSound");
-        BackMainMenu();
-    }
-
-    private void BackMainMenu()
-    {
-        TitleText.text = "SOKOBAN GAME";
-        LevelSelectPanel.SetActive(false);
-        BackButton.SetActive(false);
-        MainMenuObject.SetActive(true);
+        QuitConfirmPanel.SetActive(show);
     }
 
     public void QuitGame()
